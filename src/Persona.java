@@ -80,10 +80,8 @@ public abstract class Persona {
 
     @Override
     public String toString() {
-        return "Persona: \n" +
-                ", nombre='" + nombre + '\'' +
-                ", usuario='" + usuario + '\'' +
-                "dni=" + dni +
-                '}';
+        return "nombre= " + nombre + '\'' +
+                ", usuario= " + usuario + '\'' +
+                "dni=" + dni    ;
     }
 }

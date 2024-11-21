@@ -1,2 +1,6 @@
-package PACKAGE_NAME;public enum Posicion {
+public enum Posicion {
+    ARQUERO,
+    DEFENSOR,
+    MEDIOCAMPISTA,
+    DELANTERO;
 }
