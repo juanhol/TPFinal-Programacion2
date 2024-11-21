@@ -70,4 +70,20 @@ public abstract class Persona {
     public int hashCode() {
         return Objects.hash(dni, nombre, usuario, contrasenia, estado);
     }
+
+    public boolean iniciarSesion(String usuario, String contrasenia){
+        if ((usuario.equals(this.usuario))&&(contrasenia.equals(this.contrasenia)))
+            return true;
+        else
+            return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Persona: \n" +
+                ", nombre='" + nombre + '\'' +
+                ", usuario='" + usuario + '\'' +
+                "dni=" + dni +
+                '}';
+    }
 }
