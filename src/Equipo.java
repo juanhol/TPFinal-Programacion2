@@ -1,19 +1,18 @@
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Equipo {
     private static int idh=0;
     private int id;
     private String nombre;
-    private List<Jugador> listadoJugadores;
+    private Listado<Jugador> listadoJugadores;
     private boolean estado;
     private Entrenador entrenador;
 
     public Equipo() {
         idh++;
         this.id=idh;
-        this.listadoJugadores = new ArrayList<>();
         this.estado=true;
     }
 
@@ -40,11 +39,11 @@ public class Equipo {
         this.nombre = nombre;
     }
 
-    public List<Jugador> getListadoJugadores() {
+    public Listado<Jugador> getListadoJugadores() {
         return listadoJugadores;
     }
 
-    public void setListadoJugadores(List<Jugador> listadoJugadores) {
+    public void setListadoJugadores(Listado<Jugador> listadoJugadores) {
         this.listadoJugadores = listadoJugadores;
     }
 
@@ -77,25 +76,15 @@ public class Equipo {
         return Objects.hash(id, nombre, listadoJugadores, estado, entrenador);
     }
 
-    public String listarJugadores(){
-        StringBuilder listado=new StringBuilder();
-
-        for (Jugador jugador: this.listadoJugadores){
-            listado.append(jugador.getNombre()).append(", ").append(jugador.getPosicion());;
-        }
-        if (!listado.isEmpty()) {
-            listado.setLength(listado.length() - 2);
-        }
-        return listado.toString();
+    public void listarJugadores(){
+        listadoJugadores.listarElementos();
     }
 
     @Override
     public String toString() {
         return  "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", listadoJugadores=" + this.listarJugadores() +
-                ", estado=" + estado +
-                ", entrenador=" + entrenador +
-                '}';
+                ", listadoJugadores=" + listadoJugadores +
+                ", entrenador=" + entrenador.getNombre();
     }
 }
