@@ -1,3 +1,7 @@
+import netscape.javascript.JSObject;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Objects;
 
 public class Entrenador extends Persona{
@@ -37,5 +41,38 @@ public class Entrenador extends Persona{
     public String toString() {
         return super.toString() +
                 "equipoDirigido=" + equipoDirigido.getNombre();
+    }
+
+    @Override
+    public JSONObject serializar() {
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("dni",this.getDni());
+            jsonObject.put("nombre",this.getNombre());
+            jsonObject.put("usuario",this.getUsuario());
+            jsonObject.put("contrasenia",this.getContrasenia());
+            jsonObject.put("estado",this.isEstado());
+            jsonObject.put("equipoDirigido",this.equipoDirigido.serializar());
+        }
+        catch (JSONException ex){
+            ex.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    @Override
+    public Object deserializar(JSONObject json) {
+        Entrenador entrenador=new Entrenador();
+        try {
+            entrenador.setDni(json.getInt("dni"));
+            entrenador.setNombre(json.getString("nombre"));
+            entrenador.setUsuario(json.getString("usuario"));
+            entrenador.setContrasenia(json.getString("contrasenia"));
+            entrenador.setEstado(json.getBoolean("estado"));
+            entrenador.setEquipoDirigido(json.getJSONArray("equipodirigido"));
+        }catch (JSONException ex){
+            ex.printStackTrace();
+        }
+        return entrenador;
     }
 }

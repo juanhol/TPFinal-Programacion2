@@ -1,6 +1,8 @@
+import netscape.javascript.JSObject;
+
 import java.util.Objects;
 
-public abstract class Persona {
+public abstract class Persona implements Persistible{
     private int dni;
     private String nombre;
     private String usuario;
@@ -84,4 +86,5 @@ public abstract class Persona {
                 ", usuario= " + usuario + '\'' +
                 "dni=" + dni    ;
     }
+
 }

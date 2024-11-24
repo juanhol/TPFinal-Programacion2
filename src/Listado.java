@@ -17,4 +17,12 @@ public class Listado <T>{
             System.out.println(t.toString());
         }
     }
+    public int cantidadElementos()
+    {
+        return elementos.size();
+    }
+
+    public T getElemento(int posicion){
+        return elementos.get(posicion);
+    }
 }
