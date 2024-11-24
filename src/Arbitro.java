@@ -60,8 +60,8 @@ public class Arbitro extends Persona{
         }
         return jsonObject;    }
 
-    @Override
-    public Object deserializar(JSONObject json) {
+    //@Override
+    public static Arbitro deserializar(JSONObject json) {
         Arbitro arbitro=new Arbitro();
         try {
             arbitro.setDni(json.getInt("dni"));

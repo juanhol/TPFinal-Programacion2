@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Torneo {
+public abstract class Torneo implements Persistible {
     private static int idh=0;
     private int id;
     private String nombre;
@@ -58,6 +58,15 @@ public abstract class Torneo {
     public void setResultados(HashMap<Equipo, Integer> resultados) {
         this.resultados = resultados;
     }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
     // exepcion personalizada supera limite de equipos
     public void agregarEquipo(Equipo equipo){
         equipos.add(equipo);

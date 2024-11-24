@@ -107,19 +107,29 @@ public class Equipo implements Persistible{
                 listadoJugadores.put(jugador);
             }
             jsonObject.put("listadoJugadores",listadoJugadores);
-            jsonObject.put("")
+            jsonObject.put("estado",this.estado);
+            jsonObject.put("Entrenador",this.getEntrenador().serializar());
         }catch(JSONException ex){
             ex.printStackTrace();
         }
         return jsonObject;
     }
 
-    @Override
-    public Object deserializar(JSONObject json) {
+    //@Override
+    public static Equipo deserializar(JSONObject json) {
         Equipo equipo=new Equipo();
         try {
             equipo.setId(json.getInt("id"));
-            equipo.set
+            equipo.setNombre(json.getString("nombre"));
+            Listado <Jugador> listadoJugadores = new Listado<>();
+            JSONArray listadoJugadoresJson=json.getJSONArray("listadoJugadores");
+            for (int i = 0; i < listadoJugadoresJson.length(); i++) {
+                Jugador jugador=(Jugador)Jugador.deserializar(listadoJugadoresJson.getJSONObject(i));
+                listadoJugadores.agregarElemento(jugador);
+            }
+            equipo.setListadoJugadores(listadoJugadores);
+            equipo.setEstado(json.getBoolean("estado"));
+            equipo.setEntrenador(Entrenador.deserializar(json.getJSONObject("Entrenador")));
         }catch (JSONException ex){
             ex.printStackTrace();
         }

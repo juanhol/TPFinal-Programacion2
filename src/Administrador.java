@@ -60,8 +60,8 @@ public class Administrador extends Persona {
         return jsonObject;
     }
 
-    @Override
-    public Object deserializar(JSONObject json) {
+    //@Override
+    public static Administrador deserializar(JSONObject json) {
         Administrador admin=new Administrador();
         try {
             admin.setDni(json.getInt("dni"));

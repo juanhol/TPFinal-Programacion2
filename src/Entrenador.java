@@ -60,8 +60,8 @@ public class Entrenador extends Persona{
         return jsonObject;
     }
 
-    @Override
-    public Object deserializar(JSONObject json) {
+    //@Override
+    public static Entrenador deserializar(JSONObject json) {
         Entrenador entrenador=new Entrenador();
         try {
             entrenador.setDni(json.getInt("dni"));
@@ -69,7 +69,7 @@ public class Entrenador extends Persona{
             entrenador.setUsuario(json.getString("usuario"));
             entrenador.setContrasenia(json.getString("contrasenia"));
             entrenador.setEstado(json.getBoolean("estado"));
-            entrenador.setEquipoDirigido(json.getJSONArray("equipodirigido"));
+            entrenador.setEquipoDirigido(Equipo.deserializar(json.getJSONObject("equipodirigido")));
         }catch (JSONException ex){
             ex.printStackTrace();
         }

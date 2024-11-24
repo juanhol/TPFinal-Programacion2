@@ -62,8 +62,8 @@ public class Jugador extends Persona{
         return jsonObject;
     }
 
-    @Override
-    public Object deserializar(JSONObject json) {
+    //@Override
+    public static Jugador deserializar(JSONObject json) {
         Jugador jugador=new Jugador();
         try {
             jugador.setDni(json.getInt("dni"));
