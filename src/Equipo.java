@@ -1,8 +1,13 @@
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class Equipo {
+public class Equipo implements Persistible{
     private static int idh=0;
     private int id;
     private String nombre;
@@ -14,6 +19,7 @@ public class Equipo {
         idh++;
         this.id=idh;
         this.estado=true;
+        this.listadoJugadores=new Listado<>();
     }
 
     public Equipo(String nombre, Entrenador entrenador) {
@@ -21,6 +27,7 @@ public class Equipo {
         this.id=idh;
         this.nombre = nombre;
         this.entrenador = entrenador;
+        this.listadoJugadores=new Listado<>();
     }
 
     public int getId() {
@@ -86,5 +93,46 @@ public class Equipo {
                 ", nombre='" + nombre + '\'' +
                 ", listadoJugadores=" + listadoJugadores +
                 ", entrenador=" + entrenador.getNombre();
+    }
+
+    @Override
+    public JSONObject serializar() {
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("id",this.id);
+            jsonObject.put("nombre",this.nombre);
+            JSONArray listadoJugadores=new JSONArray();
+            for (int i = 0; i < this.listadoJugadores.cantidadElementos(); i++) {
+                JSONObject jugador=this.listadoJugadores.getElemento(i).serializar();
+                listadoJugadores.put(jugador);
+            }
+            jsonObject.put("listadoJugadores",listadoJugadores);
+            jsonObject.put("estado",this.estado);
+            jsonObject.put("Entrenador",this.getEntrenador().serializar());
+        }catch(JSONException ex){
+            ex.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    //@Override
+    public static Equipo deserializar(JSONObject json) {
+        Equipo equipo=new Equipo();
+        try {
+            equipo.setId(json.getInt("id"));
+            equipo.setNombre(json.getString("nombre"));
+            Listado <Jugador> listadoJugadores = new Listado<>();
+            JSONArray listadoJugadoresJson=json.getJSONArray("listadoJugadores");
+            for (int i = 0; i < listadoJugadoresJson.length(); i++) {
+                Jugador jugador=(Jugador)Jugador.deserializar(listadoJugadoresJson.getJSONObject(i));
+                listadoJugadores.agregarElemento(jugador);
+            }
+            equipo.setListadoJugadores(listadoJugadores);
+            equipo.setEstado(json.getBoolean("estado"));
+            equipo.setEntrenador(Entrenador.deserializar(json.getJSONObject("Entrenador")));
+        }catch (JSONException ex){
+            ex.printStackTrace();
+        }
+        return equipo;
     }
 }

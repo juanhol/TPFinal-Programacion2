@@ -1,6 +1,8 @@
+import netscape.javascript.JSObject;
+
 import java.util.Objects;
 
-public abstract class Persona {
+public abstract class Persona implements Persistible{
     private int dni;
     private String nombre;
     private String usuario;
@@ -18,57 +20,54 @@ public abstract class Persona {
         this.estado = true;
     }
 
+    ///GETTERS Y SETTERS
+
     public int getDni() {
         return dni;
     }
-
     public void setDni(int dni) {
         this.dni = dni;
     }
-
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
     public String getUsuario() {
         return usuario;
     }
-
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-
     public String getContrasenia() {
         return contrasenia;
     }
-
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
-
     public boolean isEstado() {
         return estado;
     }
-
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+
+
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Persona persona = (Persona) o;
-        return dni == persona.dni && estado == persona.estado && Objects.equals(nombre, persona.nombre) && Objects.equals(usuario, persona.usuario) && Objects.equals(contrasenia, persona.contrasenia);
+        return dni == persona.dni;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dni, nombre, usuario, contrasenia, estado);
+        return Objects.hashCode(dni);
     }
 
     public boolean iniciarSesion(String usuario, String contrasenia){
@@ -84,4 +83,5 @@ public abstract class Persona {
                 ", usuario= " + usuario + '\'' +
                 "dni=" + dni    ;
     }
+
 }

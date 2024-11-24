@@ -1,6 +1,7 @@
 import netscape.javascript.JSObject;
+import org.json.JSONObject;
 
 public interface Persistible {
-    JSObject serializar();
-    void deserializar(JSObject json);
+    JSONObject serializar();
+    /// void deserializar(JSONObject json);
 }
