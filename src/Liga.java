@@ -2,10 +2,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Liga extends Torneo{
     Listado<Partido> partidos;
@@ -60,7 +57,14 @@ public class Liga extends Torneo{
                 equipos.add(equipo);
             }
             liga.setEquipos(equipos);
-            liga.setResultados();
+            HashMap<Equipo, Integer> resultados = new HashMap<>();
+            JSONObject resultadosJson = json.getJSONObject("resultados");
+            for (String key : resultadosJson.keySet()) {
+                Equipo equipo = Equipo.deserializar(new JSONObject(key));
+                int valor = resultadosJson.getInt(key);
+                resultados.put(equipo, valor);
+            }
+            liga.setResultados(resultados);
         }catch (JSONException ex){
             ex.printStackTrace();
         }
