@@ -1,5 +1,6 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,18 +9,10 @@ import java.util.Scanner;
 
 public class Menu {
     private final String titulo;
-    private static Listado<Administrador> administradores;
-    private static Listado<Arbitro> arbitros;
-    private static Listado<Entrenador> entrenadores;
-    private static Listado<Jugador> jugadores;
-    private Scanner scanner;
+    private static Scanner scanner;
 
     public Menu(String titulo) {
         this.titulo = titulo;
-        administradores = new Listado<>();
-        arbitros = new Listado<>();
-        entrenadores = new Listado<>();
-        jugadores = new Listado<>();
         this.scanner= new Scanner(System.in);
     }
 
@@ -29,7 +22,7 @@ public class Menu {
         ArchivoJson archivoArbitros = new ArchivoJson("Arbitros.json");
         ArchivoJson archivoEntrenadores = new ArchivoJson("Entrenadores.json");
         ArchivoJson archivoJugadores = new ArchivoJson("Jugadores.json");
-        JSONArray array= new JSONArray();
+        JSONArray jsonArray= new JSONArray();
         JSONObject object= new JSONObject();
         do {
             System.out.println("\n======================== " + titulo + " ========================");
@@ -57,38 +50,36 @@ public class Menu {
 
                                 switch (opcion) {
                                     case 1:
-                                        Persona admin= registrarPersona(administradores);
+                                        Persona admin= registrarPersona(archivoAdministradores);
                                         System.out.println("Ingrese su email\n");
                                         String email=scanner.nextLine();
                                         Administrador admin1 = new Administrador(admin.getDni(), admin.getNombre(), admin.getUsuario(), admin.getContrasenia(),email);
-                                        administradores.agregarElemento(admin1);
-                                        array=administradores.serializar();
-                                        ArchivoJson.grabarArray(array,archivoAdministradores);
+                                        jsonArray=ArchivoJson.leerArray(archivoAdministradores);
+                                        jsonArray.put(admin1.serializar());
+                                        ArchivoJson.grabarArray(jsonArray,archivoAdministradores);
                                         System.out.println("Administrador registrado");
                                         break;
                                     case 2:
-                                        Persona arbitro= registrarPersona(arbitros);
+                                        Persona arbitro= registrarPersona(archivoArbitros);
                                         System.out.println("Ingrese la cantidad de partidos arbitrados:\n");
                                         int cant=scanner.nextInt();
                                         Arbitro arbitro1 = new Arbitro(arbitro.getDni(), arbitro.getNombre(), arbitro.getUsuario(), arbitro.getContrasenia(),cant);
-                                        arbitros.agregarElemento(arbitro1);
-                                        array=arbitros.serializar();
-                                        ArchivoJson.grabarArray(array,archivoArbitros);
+                                        jsonArray=ArchivoJson.leerArray(archivoArbitros);
+                                        jsonArray.put(arbitro1.serializar());
+                                        ArchivoJson.grabarArray(jsonArray,archivoArbitros);
                                         System.out.println("Arbitro registrado");
 
                                         break;
                                     case 3:
-                                        Persona entrenador= registrarPersona(entrenadores);
-                                        System.out.println("Ingrese el equipo a dirigir\n");
-                                        String equipo=scanner.nextLine();
-                                        Entrenador entrenador1 = new Entrenador(entrenador.getDni(), entrenador.getNombre(), entrenador.getUsuario(), entrenador.getContrasenia(),equipo);
-                                        entrenadores.agregarElemento(entrenador1);
-                                        array=entrenadores.serializar();
-                                        ArchivoJson.grabarArray(array,archivoEntrenadores);
+                                        Persona entrenador= registrarPersona(archivoEntrenadores);
+                                        Entrenador entrenador1 = new Entrenador(entrenador.getDni(), entrenador.getNombre(), entrenador.getUsuario(), entrenador.getContrasenia(),"");
+                                        jsonArray=ArchivoJson.leerArray(archivoEntrenadores);
+                                        jsonArray.put(entrenador1.serializar());
+                                        ArchivoJson.grabarArray(jsonArray,archivoEntrenadores);
                                         System.out.println("Entrenador registrado");
                                         break;
                                     case 4:
-                                        Persona jugador= registrarPersona(jugadores);
+                                        Persona jugador= registrarPersona(archivoJugadores);
                                         String entrada;
                                         Posicion posicion=null;
                                         do {
@@ -103,9 +94,9 @@ public class Menu {
                                         }while(posicion==null);
 
                                         Jugador jugador1 = new Jugador(jugador.getDni(), jugador.getNombre(), jugador.getUsuario(), jugador.getContrasenia(),posicion);
-                                        jugadores.agregarElemento(jugador1);
-                                        array=jugadores.serializar();
-                                        ArchivoJson.grabarArray(array,archivoJugadores);
+                                        jsonArray=ArchivoJson.leerArray(archivoJugadores);
+                                        jsonArray.put(jugador1.serializar());
+                                        ArchivoJson.grabarArray(jsonArray,archivoJugadores);
                                         System.out.println("Jugador registrado");
                                         break;
                                     case 5:
@@ -119,6 +110,41 @@ public class Menu {
                             }
                         } while (opcion != 5);
                     break;
+                    case 2:
+                        int opcion1 = 0;
+
+                        do {
+                            System.out.println("\n======================== " + titulo + " ========================");
+                            System.out.println("1. Iniciar sesión como Administrador");
+                            System.out.println("2. Iniciar sesión como Arbitro");
+                            System.out.println("3. Iniciar sesión como Entrenador");
+                            System.out.println("4. Iniciar sesión como Jugador");
+                            System.out.println("5. Volver al menu anterior");
+                            System.out.println("Seleccione una opción: ");
+                            opcion1 = scanner.nextInt();
+
+                            switch (opcion1){
+                                case 1:
+                                    Menu.iniciarSesion(archivoAdministradores);
+                                    break;
+                                case 2:
+                                    Menu.iniciarSesion(archivoArbitros);
+                                    break;
+                                case 3:
+                                    Menu.iniciarSesion(archivoEntrenadores);
+                                    break;
+                                case 4:
+                                    Menu.iniciarSesion(archivoJugadores);
+                                    break;
+                                case 5:
+                                    break;
+                                default:
+                                    System.out.println("Opción no válida. Intente de nuevo.");
+                            }
+
+                        } while (opcion1 != 5);
+
+                        break;
                     case 0:
                         System.out.println("Saliendo del menú...");
                         scanner.close();
@@ -164,7 +190,7 @@ public class Menu {
                 persona.setDni(scanner.nextInt());
                 scanner.nextLine();
 
-                flagDNI=Menu.CantidadDigitos(persona.getDni());
+                flagDNI = Menu.CantidadDigitos(persona.getDni());
                 flagDNI = Menu.validarSiYaExisteDni(persona.getDni(), archivo);
 
             } catch (InputMismatchException e) {
@@ -191,16 +217,126 @@ public class Menu {
         }
 
 
-        public static int validarSiYaExisteDni ( int dni, ArchivoJson archivo) throws ExceptionDniYaIngresado{
+    public static int validarSiYaExisteDni(int dni, ArchivoJson archivo) throws ExceptionDniYaIngresado {
+        JSONTokener tokener = ArchivoJson.leer(archivo); // Lee el archivo JSON
 
-        for (int i = 0; i < lista.cantidadElementos(); i++) {
-                Persona persona = (Persona) lista.getElemento(i);
-                if (persona.getDni() == dni) {
-                    throw new ExceptionDniYaIngresado("Dni ya ingresado");
+        if (tokener != null) {
+
+            JSONArray jsonArray = new JSONArray(tokener); // Convierto el contenido en un JSONArray
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                JSONObject jsonObject = jsonArray.getJSONObject(i); // Extrae cada objeto JSON
+
+                if (jsonObject.getInt("dni") == dni) {
+
+                    throw new ExceptionDniYaIngresado("DNI ya ingresado.");
                 }
             }
-            return 0;
         }
+        return 0; // Retorna 0 si no encuentra duplicados
+    }
+
+    public void menuEntrenador(Entrenador entrenador){
+
+    }
+    public void menuAdministrador(Administrador administrador){
+
+    }
+
+    public void menuArbitro(Arbitro arbitro){
+
+    }
+
+    public void menuJugador(Jugador jugador){
+
+    }
+
+
+
+    public static boolean validarUsuario(String usuario, ArchivoJson archivo) {
+        JSONTokener tokener = ArchivoJson.leer(archivo); // Lee el archivo JSON
+
+        if (tokener != null) {
+            JSONArray jsonArray = new JSONArray(tokener); // Convierto el contenido en un JSONArray
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                if (jsonObject.getString("usuario").equals(usuario)) {
+                    return true; // Usuario encontrado
+                }
+            }
+        }
+
+        return false; // Usuario no encontrado
+    }
+
+    public static boolean validarContrasenia(String usuario, String contrasenia, ArchivoJson archivo) {
+        JSONTokener tokener = ArchivoJson.leer(archivo);
+
+        if (tokener != null) {
+            JSONArray jsonArray = new JSONArray(tokener);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                // Verifica si el usuario coincide y luego valida la contraseña
+                if (jsonObject.getString("usuario").equals(usuario)) {
+                    return jsonObject.getString("contrasenia").equals(contrasenia); // Contraseña correcta o incorrecta
+                }
+            }
+        }
+
+        return false; // Esto no debería ocurrir si se valida el usuario previamente
+    }
+
+    public static void iniciarSesion(ArchivoJson archivo) {
+        boolean usuarioValido = false;
+        String usuarioIngresado = null;
+
+        scanner.nextLine();
+
+        while (!usuarioValido) {
+            System.out.println("Ingrese su usuario: ");
+            String usuario = scanner.nextLine();
+
+            try {
+                if (Menu.validarUsuario(usuario, archivo)) { // Cambiar archivo según corresponda
+                    usuarioValido = true;
+                    usuarioIngresado = usuario; // Guardamos el usuario válido
+                    System.out.println("Usuario encontrado.");
+                } else {
+                    System.out.println("Usuario no encontrado. Por favor, intente de nuevo.");
+                }
+            } catch (Exception e) {
+                System.out.println("Ocurrió un error: " + e.getMessage());
+            }
+        }
+
+        boolean contraseniaValida = false;
+
+        while (!contraseniaValida) {
+            System.out.println("Ingrese su contraseña: ");
+            String contrasenia = scanner.next();
+
+            try {
+                if (validarContrasenia(usuarioIngresado, contrasenia, archivo)) { // Verifica la contraseña
+                    contraseniaValida = true;
+                    System.out.println("Inicio de sesión exitoso. Bienvenido.");
+                } else {
+                    System.out.println("Contraseña incorrecta. Por favor, intente de nuevo.");
+                }
+            } catch (Exception e) {
+                System.out.println("Ocurrió un error: " + e.getMessage());
+            }
+        }
+
+
+    }
+
+
+
 
 
 }

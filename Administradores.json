@@ -1,8 +1,26 @@
-[{
-   "estado": true,
-   "usuario": "lautaro1216",
-   "contrasenia": "1234",
-   "nombre": "lautaro",
-   "dni": 41458797,
-   "email": "lautaro@gmail.com"
-}]
+[
+   {
+      "estado": true,
+      "usuario": "caro1",
+      "contrasenia": "1234",
+      "nombre": "caro",
+      "dni": 11111111,
+      "email": "caro@gmail.com"
+   },
+   {
+      "estado": true,
+      "usuario": "lautaro",
+      "contrasenia": "1234",
+      "nombre": "lautaro",
+      "dni": 41458797,
+      "email": "lautaro@gmail.com"
+   },
+   {
+      "estado": true,
+      "usuario": "juan",
+      "contrasenia": "1234",
+      "nombre": "juan",
+      "dni": 12345678,
+      "email": "juan@gmail.com"
+   }
+]

@@ -33,6 +33,17 @@ public class ArchivoJson {
         return jsonTokener;
     }
 
+    public static JSONArray leerArray(ArchivoJson archivo) {
+        JSONArray jsonArray = new JSONArray();
+        try (FileReader reader = new FileReader(archivo.getNombre())) {
+            JSONTokener tokener = new JSONTokener(reader);
+            jsonArray = new JSONArray(tokener);
+        } catch (IOException e) {
+            System.out.println("Error leyendo el archivo: " + archivo.getNombre());
+        }
+        return jsonArray;
+    }
+
     public static void grabarObject(JSONObject jsonObject,ArchivoJson archivo){
         try {
 
