@@ -1,8 +1,10 @@
 import netscape.javascript.JSObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Objects;
 
-public abstract class Persona implements Persistible{
+public class Persona implements Persistible{
     private int dni;
     private String nombre;
     private String usuario;
@@ -82,6 +84,39 @@ public abstract class Persona implements Persistible{
         return "nombre= " + nombre + '\'' +
                 ", usuario= " + usuario + '\'' +
                 "dni=" + dni    ;
+    }
+
+    @Override
+    public JSONObject serializar() {
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("dni",this.getDni());
+            jsonObject.put("nombre",this.getNombre());
+            jsonObject.put("usuario",this.getUsuario());
+            jsonObject.put("contrasenia",this.getContrasenia());
+            jsonObject.put("estado",this.isEstado());
+        }
+        catch (JSONException ex){
+            ex.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    public static Persona deserializar(JSONObject json) {
+        Persona persona = new Persona();
+        try {
+            persona.setDni(json.getInt("dni"));
+            persona.setNombre(json.getString("nombre"));
+            persona.setUsuario(json.getString("usuario"));
+            persona.setContrasenia(json.getString("contrasenia"));
+            persona.setEstado(json.getBoolean("estado"));
+            ;
+
+        }catch (JSONException ex){
+            ex.printStackTrace();
+        }
+        return persona;
+
     }
 
 }

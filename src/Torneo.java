@@ -78,8 +78,7 @@ public abstract class Torneo implements Persistible {
                 ", equipos=" + equipos +
                 ", resultados=" + resultados;
     }
-    public Equipo ganadorTorneo(){
-        Equipo equipoGanador=new Equipo();
-        return equipoGanador;
-    }
+    public abstract Equipo ganadorTorneo();
+
+
 }

@@ -16,6 +16,8 @@ public class Copa extends Torneo{
         this.partidosEliminatorios=new HashMap<>();
     }
 
+
+
     public Copa(String nombre, String faseActual) {
         super(nombre);
         this.faseActual = faseActual;
@@ -88,6 +90,12 @@ public class Copa extends Torneo{
         return copa;
     }
 
+
+
+    @Override
+    public Equipo ganadorTorneo() {
+        return null;
+    }
 
 
 }

@@ -5,21 +5,21 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class Entrenador extends Persona{
-    private Equipo equipoDirigido;
+    private String equipoDirigido;
 
     public Entrenador() {
     }
 
-    public Entrenador(int dni, String nombre, String usuario, String contrasenia, Equipo equipoDirigido) {
+    public Entrenador(int dni, String nombre, String usuario, String contrasenia, String equipoDirigido) {
         super(dni, nombre, usuario, contrasenia);
         this.equipoDirigido = equipoDirigido;
     }
 
-    public Equipo getEquipoDirigido() {
+    public String getEquipoDirigido() {
         return equipoDirigido;
     }
 
-    public void setEquipoDirigido(Equipo equipoDirigido) {
+    public void setEquipoDirigido(String equipoDirigido) {
         this.equipoDirigido = equipoDirigido;
     }
 
@@ -27,19 +27,15 @@ public class Entrenador extends Persona{
     @Override
     public String toString() {
         return super.toString() +
-                "equipoDirigido=" + equipoDirigido.getNombre();
+                "equipoDirigido=" + equipoDirigido;
     }
 
     @Override
     public JSONObject serializar() {
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("dni",this.getDni());
-            jsonObject.put("nombre",this.getNombre());
-            jsonObject.put("usuario",this.getUsuario());
-            jsonObject.put("contrasenia",this.getContrasenia());
-            jsonObject.put("estado",this.isEstado());
-            jsonObject.put("equipoDirigido",this.equipoDirigido.serializar());
+            jsonObject=super.serializar();
+            jsonObject.put("equipoDirigido",this.equipoDirigido);
         }
         catch (JSONException ex){
             ex.printStackTrace();
@@ -47,16 +43,12 @@ public class Entrenador extends Persona{
         return jsonObject;
     }
 
-    //@Override
+
     public static Entrenador deserializar(JSONObject json) {
         Entrenador entrenador=new Entrenador();
         try {
-            entrenador.setDni(json.getInt("dni"));
-            entrenador.setNombre(json.getString("nombre"));
-            entrenador.setUsuario(json.getString("usuario"));
-            entrenador.setContrasenia(json.getString("contrasenia"));
-            entrenador.setEstado(json.getBoolean("estado"));
-            entrenador.setEquipoDirigido(Equipo.deserializar(json.getJSONObject("equipodirigido")));
+            entrenador= (Entrenador) Persona.deserializar(json);
+            entrenador.setEquipoDirigido(json.getString("equipodirigido"));
         }catch (JSONException ex){
             ex.printStackTrace();
         }

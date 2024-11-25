@@ -35,11 +35,7 @@ public class Arbitro extends Persona{
     public JSONObject serializar() {
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("dni",this.getDni());
-            jsonObject.put("nombre",this.getNombre());
-            jsonObject.put("usuario",this.getUsuario());
-            jsonObject.put("contrasenia",this.getContrasenia());
-            jsonObject.put("estado",this.isEstado());
+            jsonObject=super.serializar();
             jsonObject.put("partidosArbitrados",this.partidosArbitrados);
         }
         catch (JSONException ex){
@@ -47,15 +43,11 @@ public class Arbitro extends Persona{
         }
         return jsonObject;    }
 
-    //@Override
+
     public static Arbitro deserializar(JSONObject json) {
         Arbitro arbitro=new Arbitro();
         try {
-            arbitro.setDni(json.getInt("dni"));
-            arbitro.setNombre(json.getString("nombre"));
-            arbitro.setUsuario(json.getString("usuario"));
-            arbitro.setContrasenia(json.getString("contrasenia"));
-            arbitro.setEstado(json.getBoolean("estado"));
+            arbitro= (Arbitro) Persona.deserializar(json);
             arbitro.setPartidosArbitrados(json.getInt("partidosArbitrados"));
         }
         catch(JSONException ex){

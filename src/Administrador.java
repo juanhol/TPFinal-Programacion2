@@ -34,11 +34,7 @@ public class Administrador extends Persona {
     public JSONObject serializar() {
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("dni",this.getDni());
-            jsonObject.put("nombre",this.getNombre());
-            jsonObject.put("usuario",this.getUsuario());
-            jsonObject.put("contrasenia",this.getContrasenia());
-            jsonObject.put("estado",this.isEstado());
+            jsonObject=super.serializar();
             jsonObject.put("email",this.getEmail());
         }
         catch (JSONException ex){
@@ -47,15 +43,11 @@ public class Administrador extends Persona {
         return jsonObject;
     }
 
-    //@Override
+
     public static Administrador deserializar(JSONObject json) {
         Administrador admin=new Administrador();
         try {
-            admin.setDni(json.getInt("dni"));
-            admin.setNombre(json.getString("nombre"));
-            admin.setUsuario(json.getString("usuario"));
-            admin.setContrasenia(json.getString("contrasenia"));
-            admin.setEstado(json.getBoolean("estado"));
+            admin= (Administrador) Persona.deserializar(json);
             admin.setEmail(json.getString("email"));
         }
         catch(JSONException ex){

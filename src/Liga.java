@@ -77,4 +77,12 @@ public class Liga extends Torneo{
         }
         return liga;
     }
+
+
+    @Override
+    public Equipo ganadorTorneo() {
+        return null;
+    }
+
+
 }

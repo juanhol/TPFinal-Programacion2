@@ -22,10 +22,10 @@ public class ArchivoJson {
     }
 
 
-    public static JSONTokener leer(String nombreArchivo){
+    public static JSONTokener leer(ArchivoJson archivo){
         JSONTokener jsonTokener=null;
         try {
-            jsonTokener=new JSONTokener(new FileReader(nombreArchivo));
+            jsonTokener=new JSONTokener(new FileReader(archivo.getNombre()));
         }
         catch (IOException ex){
             ex.printStackTrace();
@@ -33,15 +33,22 @@ public class ArchivoJson {
         return jsonTokener;
     }
 
-    public static void grabarJsonObject(JSONObject jsonObject, JSONArray jsonArray,String nombreArchivo){
-        jsonArray.put(jsonObject);
-        ArchivoJson.grabarArray(jsonArray,nombreArchivo);
-    }
-
-    public static void grabarArray(JSONArray jsonArray,String nombreArchivo){
+    public static void grabarObject(JSONObject jsonObject,ArchivoJson archivo){
         try {
 
-            FileWriter file=new FileWriter(nombreArchivo);
+            FileWriter file=new FileWriter(archivo.getNombre());
+            file.write(jsonObject.toString());
+            file.close();
+        }
+        catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public static void grabarArray(JSONArray jsonArray,ArchivoJson archivo){
+        try {
+
+            FileWriter file=new FileWriter(archivo.getNombre());
             file.write(jsonArray.toString());
             file.close();
         }
