@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,9 +8,10 @@ public abstract class Torneo implements Persistible {
     private int id;
     private String nombre;
     private Set<Equipo> equipos;
-    private HashMap<Equipo,Integer> resultados;
+    protected HashMap<Equipo,Integer> resultados;
     private Estado estado;
 
+    // Constructores
     public Torneo() {
         idh++;
         this.id=idh;
@@ -59,18 +61,7 @@ public abstract class Torneo implements Persistible {
         this.estado = estado;
     }
 
-
-    // exepcion personalizada supera limite de equipos
-    public void agregarEquipo(Equipo equipo){
-        equipos.add(equipo);
-    }
-    public void eliminarEquipo(Equipo equipo){
-        equipos.remove(equipo);
-    }
-    public void actualizarResultados(Equipo equipo,Integer puntos){
-        resultados.replace(equipo,puntos);
-    }
-
+    // Sobreescrituras
     @Override
     public String toString() {
         return  "id=" + id +
@@ -78,7 +69,26 @@ public abstract class Torneo implements Persistible {
                 ", equipos=" + equipos +
                 ", resultados=" + resultados;
     }
-    public abstract Equipo ganadorTorneo();
 
+    // Métodos propios
+
+    // exepcion personalizada supera limite de equipos
+    public void agregarEquipo(Equipo equipo){
+        equipos.add(equipo);
+    }
+
+    public void eliminarEquipo(Equipo equipo){
+        equipos.remove(equipo);
+    }
+
+    public void actualizarResultados(Equipo equipo,Integer puntos){
+        resultados.replace(equipo,puntos);
+    }
+
+    public Map<Equipo, Integer> obtenerPuntosEquipos() {
+        return new HashMap<>(this.getResultados());
+    }
+
+    public abstract Equipo ganadorTorneo();
 
 }

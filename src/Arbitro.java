@@ -55,4 +55,5 @@ public class Arbitro extends Persona{
         }
         return arbitro;
     }
+
 }

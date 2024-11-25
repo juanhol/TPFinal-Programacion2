@@ -59,4 +59,5 @@ public class Jugador extends Persona{
         return jugador;
 
     }
+
 }

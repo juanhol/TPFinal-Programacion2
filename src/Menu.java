@@ -12,7 +12,7 @@ public class Menu {
     private static Listado<Arbitro> arbitros;
     private static Listado<Entrenador> entrenadores;
     private static Listado<Jugador> jugadores;
-
+    private Scanner scanner;
 
     public Menu(String titulo) {
         this.titulo = titulo;
@@ -20,15 +20,15 @@ public class Menu {
         arbitros = new Listado<>();
         entrenadores = new Listado<>();
         jugadores = new Listado<>();
+        this.scanner= new Scanner(System.in);
     }
 
     public void mostrarMenu() {
-        Scanner scanner = new Scanner(System.in);
         int opcion = -1;
-        ArchivoJson archivoAdministradores = new ArchivoJson("Administradores");
-        ArchivoJson archivoArbitros = new ArchivoJson("Arbitros");
-        ArchivoJson archivoEntrenadores = new ArchivoJson("Entrenadores");
-        ArchivoJson archivoJugadores = new ArchivoJson("Jugadores");
+        ArchivoJson archivoAdministradores = new ArchivoJson("Administradores.json");
+        ArchivoJson archivoArbitros = new ArchivoJson("Arbitros.json");
+        ArchivoJson archivoEntrenadores = new ArchivoJson("Entrenadores.json");
+        ArchivoJson archivoJugadores = new ArchivoJson("Jugadores.json");
         JSONArray array= new JSONArray();
         JSONObject object= new JSONObject();
         do {
@@ -49,7 +49,8 @@ public class Menu {
                             System.out.println("2. Registrarse como Arbitro");
                             System.out.println("3. Registrarse como Entrenador");
                             System.out.println("4. Registrarse como Jugador");
-                            System.out.print("Seleccione una opción: ");
+                            System.out.println("5. Volver al menu anterior");
+                            System.out.println("Seleccione una opción: ");
 
                             try {
                                 opcion = scanner.nextInt(); // Lee la opción del usuario
@@ -58,11 +59,12 @@ public class Menu {
                                     case 1:
                                         Persona admin= registrarPersona(administradores);
                                         System.out.println("Ingrese su email\n");
-                                        String email=new String();
+                                        String email=scanner.nextLine();
                                         Administrador admin1 = new Administrador(admin.getDni(), admin.getNombre(), admin.getUsuario(), admin.getContrasenia(),email);
                                         administradores.agregarElemento(admin1);
                                         array=administradores.serializar();
                                         ArchivoJson.grabarArray(array,archivoAdministradores);
+                                        System.out.println("Administrador registrado");
                                         break;
                                     case 2:
                                         Persona arbitro= registrarPersona(arbitros);
@@ -72,6 +74,8 @@ public class Menu {
                                         arbitros.agregarElemento(arbitro1);
                                         array=arbitros.serializar();
                                         ArchivoJson.grabarArray(array,archivoArbitros);
+                                        System.out.println("Arbitro registrado");
+
                                         break;
                                     case 3:
                                         Persona entrenador= registrarPersona(entrenadores);
@@ -81,13 +85,14 @@ public class Menu {
                                         entrenadores.agregarElemento(entrenador1);
                                         array=entrenadores.serializar();
                                         ArchivoJson.grabarArray(array,archivoEntrenadores);
+                                        System.out.println("Entrenador registrado");
                                         break;
                                     case 4:
                                         Persona jugador= registrarPersona(jugadores);
                                         String entrada;
                                         Posicion posicion=null;
                                         do {
-                                            System.out.println("Ingrese la posicion a jugar \n");
+                                            System.out.println("Ingrese la posicion a jugar \n" + Arrays.toString(Posicion.values()));
                                             entrada=scanner.nextLine().toUpperCase();
                                             try {
                                                 // Convertir la entrada del usuario a un valor del enum
@@ -95,15 +100,15 @@ public class Menu {
                                             } catch (IllegalArgumentException e) {
                                                 System.out.println("Error: '" + entrada + "' no es una posición valida.");
                                             }
-                                        }while(!entrada.equals("ARQUERO") || !entrada.equals("DEFENSOR") || !entrada.equals("MEDIOCAMPISTA") || !entrada.equals("DELANTERO") );
+                                        }while(posicion==null);
 
                                         Jugador jugador1 = new Jugador(jugador.getDni(), jugador.getNombre(), jugador.getUsuario(), jugador.getContrasenia(),posicion);
                                         jugadores.agregarElemento(jugador1);
                                         array=jugadores.serializar();
                                         ArchivoJson.grabarArray(array,archivoJugadores);
+                                        System.out.println("Jugador registrado");
                                         break;
-                                    case 0:
-                                        System.out.println("Saliendo del menú...");
+                                    case 5:
                                         break;
                                     default:
                                         System.out.println("Opción no válida. Intente de nuevo.");
@@ -112,18 +117,11 @@ public class Menu {
                                 System.out.println("Error: Entrada no válida. Intente nuevamente.");
                                 scanner.next();
                             }
-                        } while (opcion != 0);
+                        } while (opcion != 5);
                     break;
-
-                    case 2:
-
-                        break;
-
-
-
-
                     case 0:
                         System.out.println("Saliendo del menú...");
+                        scanner.close();
                         break;
                     default:
                         System.out.println("Opción no válida. Intente de nuevo.");
@@ -143,61 +141,62 @@ public class Menu {
         scanner.close();
     }
 
-    public static int CantidadDigitos(int numero) {
+    public static int CantidadDigitos(int numero) throws ExceptionCantDigitosDni {
         int contador = 0;
         do {
             numero /= 10;
             contador++;
         } while (numero > 0);
-        return contador;
+        if(contador==8){
+            return 0;
         }
+        throw new ExceptionCantDigitosDni("La cantidad de digitos es erronea.");
+    }
 
 
 
-    public Persona registrarPersona(Listado lista) {
-        Scanner scanner1 = new Scanner(System.in);
+    public Persona registrarPersona(ArchivoJson archivo) {
         Persona persona = new Persona();
         int flagDNI = 0;
         do {
             try {
                 System.out.println("Ingrese su DNI con 8 digitos: \n");
-                persona.setDni(scanner1.nextInt());
-                scanner1.nextLine();
+                persona.setDni(scanner.nextInt());
+                scanner.nextLine();
 
+                flagDNI=Menu.CantidadDigitos(persona.getDni());
+                flagDNI = Menu.validarSiYaExisteDni(persona.getDni(), archivo);
 
-                flagDNI = Menu.validarSiYaExisteDni(persona.getDni(), lista);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: el dni ya esta ingresado");
             } catch (InputMismatchException e) {
+                flagDNI=1;
                 System.out.println("Error: La entrada no es un número válido.");
-                scanner1.next();
-
+                scanner.next();
+            }catch (ExceptionCantDigitosDni | ExceptionDniYaIngresado e) {
+                flagDNI=1;
+                System.out.println(e.getMessage());;
             }
 
-            if (Menu.CantidadDigitos(persona.getDni()) != 8) {
-                flagDNI = 1;
-            }
-
-            }
-            while (flagDNI == 1) ;
+        }
+            while (flagDNI == 1);
 
             System.out.println("Ingrese su nombre\n");
-            persona.setNombre(scanner1.nextLine());
+            persona.setNombre(scanner.nextLine());
             System.out.println("Ingrese su usuario\n");
-            persona.setUsuario(scanner1.nextLine());
+            persona.setUsuario(scanner.nextLine());
             System.out.println("Ingrese su contrasenia\n");
-            persona.setContrasenia(scanner1.nextLine());
+            persona.setContrasenia(scanner.nextLine());
 
-            scanner1.close();
+
             return persona;
         }
 
 
-        public static int validarSiYaExisteDni ( int dni, Listado lista){
-            for (int i = 0; i < lista.cantidadElementos(); i++) {
+        public static int validarSiYaExisteDni ( int dni, ArchivoJson archivo) throws ExceptionDniYaIngresado{
+
+        for (int i = 0; i < lista.cantidadElementos(); i++) {
                 Persona persona = (Persona) lista.getElemento(i);
                 if (persona.getDni() == dni) {
-                    return 1;
+                    throw new ExceptionDniYaIngresado("Dni ya ingresado");
                 }
             }
             return 0;

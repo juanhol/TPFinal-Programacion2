@@ -37,7 +37,7 @@ public class ArchivoJson {
         try {
 
             FileWriter file=new FileWriter(archivo.getNombre());
-            file.write(jsonObject.toString());
+            file.write(jsonObject.toString(3));
             file.close();
         }
         catch (IOException ex){
@@ -49,7 +49,7 @@ public class ArchivoJson {
         try {
 
             FileWriter file=new FileWriter(archivo.getNombre());
-            file.write(jsonArray.toString());
+            file.write(jsonArray.toString(3));
             file.close();
         }
         catch (IOException ex){
