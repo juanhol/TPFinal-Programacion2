@@ -968,6 +968,7 @@ public class Menu {
     public static void editarDNI(Scanner scanner, ArchivoJson archivoTipoPersona, Persona personaAEditar){
 
         int flag = 0;
+
         int dni;
 
         do {
@@ -976,15 +977,15 @@ public class Menu {
             scanner.nextLine();
 
             try {
-                flag = Menu.validarSiYaExisteDni(dni, archivoTipoPersona);
-                flag = Menu.CantidadDigitos(dni);
+                flag=Menu.validarSiYaExisteDni(dni, archivoTipoPersona);
+                flag= Menu.CantidadDigitos(dni);
 
             } catch (ExceptionDniYaIngresado | ExceptionCantDigitosDni e){
                 System.out.println(e.getMessage());
                 flag = 1;
             }
 
-        } while(flag == 1);
+        } while(flag == 1 );
 
         personaAEditar.setDni(dni);
 
@@ -1034,11 +1035,8 @@ public class Menu {
     }
 
     public static int validarSiYaExisteUsuario(String usuario, ArchivoJson archivoTipoPersona) throws ExceptionUsuarioRepetido {
-        JSONTokener tokener = ArchivoJson.leer(archivoTipoPersona); // Lee el archivo JSON
+        JSONArray jsonArray = ArchivoJson.leerArray2(archivoTipoPersona);
 
-        if (tokener != null) {
-
-            JSONArray jsonArray = new JSONArray(tokener); // Convierto el contenido en un JSONArray
 
             for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -1050,8 +1048,7 @@ public class Menu {
                 }
             }
             return 0; // Retorna 0 si no encuentra duplicados
-        }
-        return 1;
+
     }
 
 

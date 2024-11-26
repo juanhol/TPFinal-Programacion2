@@ -1,8 +1,8 @@
 [{
    "estado": true,
    "tienePartidoAdirigir": false,
-   "usuario": "usuario1",
-   "contrasenia": "pass1",
+   "usuario": "usuario2",
+   "contrasenia": "pass2",
    "nombre": "Lautaro Echebarne",
    "dni": 40000001,
    "partidosArbitrados": 150
