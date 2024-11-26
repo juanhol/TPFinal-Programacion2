@@ -8,36 +8,24 @@ import java.util.List;
 import java.util.Objects;
 
 public class Equipo implements Persistible{
-    private static int idh=0;
-    private int id;
     private String nombre;
     private Listado<Jugador> listadoJugadores;
     private boolean estado;
     private Entrenador entrenador;
 
     public Equipo() {
-        idh++;
-        this.id=idh;
+
         this.estado=true;
         this.listadoJugadores=new Listado<>();
     }
 
     public Equipo(String nombre, Entrenador entrenador) {
-        idh++;
-        this.id=idh;
         this.nombre = nombre;
         this.entrenador = entrenador;
         this.estado=true;
         this.listadoJugadores=new Listado<>();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;
@@ -76,12 +64,12 @@ public class Equipo implements Persistible{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Equipo equipo = (Equipo) o;
-        return id == equipo.id && estado == equipo.estado && Objects.equals(nombre, equipo.nombre) && Objects.equals(listadoJugadores, equipo.listadoJugadores) && Objects.equals(entrenador, equipo.entrenador);
+        return Objects.equals(nombre, equipo.nombre);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, listadoJugadores, estado, entrenador);
+        return Objects.hashCode(nombre);
     }
 
     public void listarJugadores(){
@@ -96,10 +84,17 @@ public class Equipo implements Persistible{
         return false;
     }
 
+    public boolean eliminarJugador(Jugador jugador){
+        if(jugador != null){
+            listadoJugadores.eliminarElemento(jugador);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
-        return  "id=" + id +
-                ", nombre='" + nombre + '\'' +
+        return " nombre='" + nombre + '\'' +
                 ", listadoJugadores=" + listadoJugadores +
                 ", entrenador=" + entrenador.getNombre();
     }
@@ -109,7 +104,6 @@ public class Equipo implements Persistible{
         JSONObject jsonObject = new JSONObject();
 
         try {
-            jsonObject.put("id", this.id);
             jsonObject.put("nombre", this.nombre);
             jsonObject.put("estado", this.estado);
             jsonObject.put("Entrenador", this.getEntrenador().serializar());
@@ -134,7 +128,6 @@ public class Equipo implements Persistible{
         Equipo equipo = new Equipo();
 
         try {
-            equipo.setId(json.getInt("id"));
             equipo.setNombre(json.getString("nombre"));
 
             // Deserializar listado de jugadores

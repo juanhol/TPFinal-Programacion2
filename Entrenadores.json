@@ -65,11 +65,11 @@
    },
    {
       "estado": true,
-      "equipoDirigido": "No tiene equipo",
+      "equipoDirigido": "gimnasia de la plata",
       "usuario": "entrenador9",
       "contrasenia": "pass9",
       "nombre": "Ernesto Valverde",
-      "dni": "20000009"
+      "dni": 20000009
    },
    {
       "estado": true,
@@ -113,11 +113,11 @@
    },
    {
       "estado": true,
-      "equipoDirigido": "No tiene equipo",
+      "equipoDirigido": "independiente",
       "usuario": "entrenador15",
       "contrasenia": "pass15",
       "nombre": "Tite Pereira",
-      "dni": "20000015"
+      "dni": 20000015
    },
    {
       "estado": true,

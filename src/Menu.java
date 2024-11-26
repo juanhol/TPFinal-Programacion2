@@ -257,47 +257,35 @@ public class Menu {
                         Menu.listarEquipos(archivoEquipos);
                     break;
                 case 2:
-                       // entrenador.setEquipoDirigido("No tiene equipo");
-
+                    Menu.agregarJugadores(scanner, archivoJugadores, archivoEquipos, equipoDirigido);
                     break;
                 case 3:
-                    System.out.println("Entre al case3");
-                    Menu.agregarJugadores(scanner, archivoJugadores, archivoEquipos, equipoDirigido);
-
+                    Menu.eliminarJugadores(scanner,archivoJugadores,archivoEquipos,equipoDirigido);
                     break;
                 case 4:
-
                     break;
-                case 5:
-
-                    break;
-
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
 
-        }while(opcion!=5);
+        }while(opcion!=4);
 
 
     }
 
     public static void tareasEntrenador(){
         System.out.println("1. Ver todos los equipos");
-        System.out.println("2. Renunciar");
-        System.out.println("3. Agregar jugador al equipo");
-        System.out.println("4. Eliminar jugador del equipo");
-        System.out.println("5. Volver al menu anterior");
+        System.out.println("2. Agregar jugador al equipo");
+        System.out.println("3. Eliminar jugador del equipo");
+        System.out.println("4. Volver al menu anterior");
     }
 
-    public static Equipo traerEquipo(ArchivoJson archivoEquipos, String equipoDirigido){
+    public static Equipo traerEquipodelEntrenador(ArchivoJson archivoEquipos, String equipoDirigido){
         JSONArray jsonArray = ArchivoJson.leerArray2(archivoEquipos);
         Equipo equipo = null;
 
 
-        System.out.println("equipoDirigido por par"+jsonArray.length());
-
         for (int i = 0; i < jsonArray.length(); i++) {
-            System.out.println(i);
             JSONObject json = jsonArray.getJSONObject(i);
 
 
@@ -308,21 +296,20 @@ public class Menu {
             }
 
         }
-        System.out.println("Llego a traer equipo"+equipo);
         return equipo;
     }
 
     public static void agregarJugadores(Scanner scanner, ArchivoJson archivoJugadores, ArchivoJson archivoEquipos, String equipoDirigido){
 
-        Equipo equipoDelEntrenador = Menu.traerEquipo(archivoEquipos, equipoDirigido);
+        Equipo equipoDelEntrenador = Menu.traerEquipodelEntrenador(archivoEquipos, equipoDirigido);
 
         String control = "";
         int z = 0;
 
         do {
             Jugador jugador = null;
-            System.out.println("Listado de jugadores actuales: ");
-            Menu.listarJugadores(archivoJugadores);
+            System.out.println("Listado de jugadores sin equipo: ");
+            Menu.listarJugadoresSinEquipo(archivoJugadores);
 
             System.out.println("Indique el jugador que desea agregar: ");
             int nro = scanner.nextInt();
@@ -338,12 +325,22 @@ public class Menu {
                 if (i + 1 == nro) {
                     jugador = Jugador.deserializar(json);
 
+                    if (jugador.getTieneEquipo()) {
+                        System.out.println("El jugador ya pertenece a un equipo. Seleccione otro.");
+                        jugador = null;
+                        break;
+                    }
+
                 }
 
             }
-
-            boolean carga = equipoDelEntrenador.agregarJugador(jugador);
-            Menu.actualizarJsondeequipos(archivoEquipos, equipoDelEntrenador);
+            boolean carga = false;
+            if(jugador != null) {
+                jugador.setTieneEquipo(true);
+                 carga = equipoDelEntrenador.agregarJugador(jugador);
+                Menu.actualizarJsondeequipos(archivoEquipos, equipoDelEntrenador);
+                Menu.actualizarJsondePersona(archivoJugadores, jugador);
+            }
 
             if (carga) {
                 System.out.println("Jugador agregado con exito!");
@@ -355,16 +352,77 @@ public class Menu {
             System.out.println("Desea cargar otro jugador? Ingrese 'si' o 'no': ");
             control = scanner.nextLine();
 
-        }while(control.equals("si") || control.equals("Si") || control.equals("SI"));
+        }while(control.equalsIgnoreCase("SI"));
 
         if(z != 0){
-            System.out.println("Se han cargado con exito los " + z + " jugadores!");
+            if(z == 1){
+                System.out.println("Se ha cargado con exito el unico jugador agregado!");
+            }else {
+                System.out.println("Se han cargado con exito los " + z + " jugadores!");
+            }
         }else{
             System.out.println("No se ha cargado ningun jugador!");
         }
 
 
     }
+
+    public static void eliminarJugadores(Scanner scanner,ArchivoJson archivoJugadores,ArchivoJson archivoEquipos, String equipoDirigido){
+
+        Equipo equipoDelEntrenador = Menu.traerEquipodelEntrenador(archivoEquipos, equipoDirigido);
+
+        String control = "";
+        boolean eliminar=false;
+        Jugador jugador=null;
+        int z = 0;
+        do {
+
+            System.out.println("Listado de jugadores actuales del equipo: ");
+            equipoDelEntrenador.listarJugadores();
+
+            System.out.println("Indique el jugador que desea eliminar: ");
+            int nro = scanner.nextInt();
+            scanner.nextLine();
+
+            for (int i = 0; i < equipoDelEntrenador.getListadoJugadores().getElementos().size(); i++) {
+
+                if (i + 1 == nro) {
+                jugador=equipoDelEntrenador.getListadoJugadores().getElemento(i);
+                }
+
+            }
+            if(jugador !=null) {
+                jugador.setTieneEquipo(false);
+                eliminar = equipoDelEntrenador.eliminarJugador(jugador);
+                Menu.actualizarJsondeequipos(archivoEquipos, equipoDelEntrenador);
+                Menu.actualizarJsondePersona(archivoJugadores, jugador);
+            }
+
+            if (eliminar) {
+                System.out.println("Jugador eliminado con exito!");
+                z++;
+            } else {
+                System.out.println("No se ha podido eliminar al jugador del equipo. ");
+            }
+
+            System.out.println("Desea eliminar otro jugador? Ingrese 'si' o 'no': ");
+            control = scanner.nextLine();
+
+        }while(control.equalsIgnoreCase("SI"));
+
+        if(z != 0){
+            if(z == 1){
+                System.out.println("Se ha cargado con exito el unico jugador agregado!");
+            }else {
+                System.out.println("Se han cargado con exito los " + z + " jugadores!");
+            }
+        }else{
+            System.out.println("No se ha cargado ningun jugador!");
+        }
+
+    }
+
+
 
     public static void listarEquipos(ArchivoJson archivoEquipos){
 
@@ -389,6 +447,22 @@ public class Menu {
 
             Jugador nuevo = Jugador.deserializar(json);
             System.out.println(i+1 + ". " + nuevo.getNombre() + " - " + nuevo.getPosicion() );
+
+        }
+
+    }
+
+    public static void listarJugadoresSinEquipo(ArchivoJson archivoJugadores){
+
+        JSONArray jsonArray = ArchivoJson.leerArray2(archivoJugadores);
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject json = jsonArray.getJSONObject(i);
+            Jugador nuevo = Jugador.deserializar(json);
+
+            if (!nuevo.getTieneEquipo()){
+                System.out.println(i+1 + ". " + nuevo.getNombre() + " - " + nuevo.getPosicion() );
+            }
 
         }
 
@@ -514,7 +588,7 @@ public class Menu {
 
     public static void guardarEquipoAEntrenador(ArchivoJson archivoEntrenadores, Entrenador entrenador, String nombre){
         entrenador.setEquipoDirigido(nombre);
-        Menu.actualizarJson(archivoEntrenadores, entrenador);
+        Menu.actualizarJsondePersona(archivoEntrenadores, entrenador);
     }
 
     public static Entrenador ElegirEntrenador(Scanner scanner, ArchivoJson archivo, String nombre) {
@@ -776,7 +850,7 @@ public class Menu {
         ArchivoJson.grabarArray(jsonArray,archivo);
     }
 
-    public static void actualizarJson(ArchivoJson archivo, Persona nuevoDato){
+    public static void actualizarJsondePersona(ArchivoJson archivo, Persona nuevoDato){
         JSONArray jsonArray = ArchivoJson.leerArray2(archivo);
 
         for(int i = 0 ; i < jsonArray.length() ; i++){

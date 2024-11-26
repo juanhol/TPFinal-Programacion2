@@ -28,8 +28,10 @@ public class Listado  <T extends Persistible> {
     }
 
     public void listarElementos(){
+        int i = 1;
         for(T t:elementos){
-            System.out.println(t.toString());
+            System.out.println(i + "-" + t.toString());
+            i++;
         }
     }
     public int cantidadElementos()
@@ -57,8 +59,8 @@ public class Listado  <T extends Persistible> {
 
     @Override
     public String toString() {
-        return "Listado{" +
-                "elementos=" + elementos +
+        return "{"
+                 + elementos +
                 '}';
     }
 }

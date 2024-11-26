@@ -13,21 +13,40 @@
          {
             "posicion": "ARQUERO",
             "estado": true,
+            "tieneEquipo": true,
             "usuario": "usuario55",
             "contrasenia": "pass55",
             "nombre": "Lucas Díaz",
-            "dni": 10000044
+            "dni": 10000055
          },
          {
-            "posicion": "ARQUERO",
+            "posicion": "DELANTERO",
             "estado": true,
-            "usuario": "usuario55",
-            "contrasenia": "pass55",
-            "nombre": "Lucas Díaz",
-            "dni": 10000044
+            "tieneEquipo": true,
+            "usuario": "usuario45",
+            "contrasenia": "pass45",
+            "nombre": "Matías Acosta",
+            "dni": 10000045
+         },
+         {
+            "posicion": "DEFENSOR",
+            "estado": true,
+            "tieneEquipo": true,
+            "usuario": "usuario1",
+            "contrasenia": "pass1",
+            "nombre": "Juan Pérez",
+            "dni": 10000001
+         },
+         {
+            "posicion": "MEDIOCAMPISTA",
+            "estado": true,
+            "tieneEquipo": true,
+            "usuario": "usuario16",
+            "contrasenia": "pass16",
+            "nombre": "Javier Fernández",
+            "dni": 10000016
          }
       ],
-      "id": 1,
       "nombre": "river"
    },
    {
@@ -41,7 +60,6 @@
       },
       "estado": true,
       "listadoJugadores": [],
-      "id": 2,
       "nombre": "boca"
    },
    {
@@ -54,25 +72,7 @@
          "dni": 20000002
       },
       "estado": true,
-      "listadoJugadores": [
-         {
-            "posicion": "ARQUERO",
-            "estado": true,
-            "usuario": "usuario54",
-            "contrasenia": "pass54",
-            "nombre": "Enzo Ruiz",
-            "dni": 10000043
-         },
-         {
-            "posicion": "ARQUERO",
-            "estado": true,
-            "usuario": "usuario55",
-            "contrasenia": "pass55",
-            "nombre": "Lucas Díaz",
-            "dni": 10000044
-         }
-      ],
-      "id": 3,
+      "listadoJugadores": [],
       "nombre": "aldosivi"
    },
    {
@@ -86,7 +86,32 @@
       },
       "estado": true,
       "listadoJugadores": [],
-      "id": 5,
       "nombre": "racing"
+   },
+   {
+      "Entrenador": {
+         "estado": true,
+         "equipoDirigido": "independiente",
+         "usuario": "entrenador15",
+         "contrasenia": "pass15",
+         "nombre": "Tite Pereira",
+         "dni": 20000015
+      },
+      "estado": true,
+      "listadoJugadores": [],
+      "nombre": "independiente"
+   },
+   {
+      "Entrenador": {
+         "estado": true,
+         "equipoDirigido": "gimnasia de la plata",
+         "usuario": "entrenador9",
+         "contrasenia": "pass9",
+         "nombre": "Ernesto Valverde",
+         "dni": 20000009
+      },
+      "estado": true,
+      "listadoJugadores": [],
+      "nombre": "gimnasia de la plata"
    }
 ]

@@ -7,15 +7,26 @@ import java.util.Objects;
 
 public class Jugador extends Persona{
     private Posicion posicion;
+    private boolean tieneEquipo;
 
+    // Constructores
     public Jugador() {
     }
 
     public Jugador(int dni, String nombre, String usuario, String contrasenia, Posicion posicion) {
         super(dni, nombre, usuario, contrasenia);
         this.posicion = posicion;
+        this.tieneEquipo = false;
     }
 
+    public Jugador(int dni, String nombre, String usuario, String contrasenia, Posicion posicion, Boolean tieneEquipo) {
+        super(dni, nombre, usuario, contrasenia);
+        this.posicion = posicion;
+        this.tieneEquipo = tieneEquipo;
+    }
+
+
+    // Getters and Setters
     public Posicion getPosicion() {
         return posicion;
     }
@@ -24,8 +35,14 @@ public class Jugador extends Persona{
         this.posicion = posicion;
     }
 
+    public boolean getTieneEquipo() {
+        return tieneEquipo;
+    }
+    public void setTieneEquipo(boolean tieneEquipo) {
+        this.tieneEquipo = tieneEquipo;
+    }
 
-
+    // Sobreescrituras
     @Override
     public String toString() {
         return super.toString() +
@@ -39,6 +56,8 @@ public class Jugador extends Persona{
         try {
             jsonObject=super.serializar();
             jsonObject.put("posicion",this.getPosicion());
+            jsonObject.put("tieneEquipo",this.getTieneEquipo());
+
         }
         catch (JSONException ex){
             ex.printStackTrace();
@@ -61,7 +80,8 @@ public class Jugador extends Persona{
                     p.getNombre(),
                     p.getUsuario(),
                     p.getContrasenia(),
-                    json.getEnum(Posicion.class,"posicion")
+                    json.getEnum(Posicion.class,"posicion"),
+                    json.getBoolean("tieneEquipo")
             );
 
 
