@@ -134,15 +134,18 @@ public class Menu {
                                     Menu.menuAdministrador(scanner, archivoLigas, archivoCopas, archivoEquipos, archivoEntrenadores);
                                     break;
                                 case 2:
-                                    Menu.iniciarSesion(scanner, archivoArbitros);
+                                    String usuarioArbitro=Menu.iniciarSesion(scanner, archivoArbitros);
+                                    Arbitro arbitro= Menu.traerArbitro(archivoArbitros,usuarioArbitro);
+                                    Menu.menuArbitro(scanner,archivoArbitros,arbitro);
                                     break;
                                 case 3:
-                                    String nombreEntrenador = Menu.iniciarSesion(scanner, archivoEntrenadores);
-                                    Entrenador entrenador = Menu.traerEntrenador(archivoEntrenadores, nombreEntrenador);
+                                    String usuarioEntrenador = Menu.iniciarSesion(scanner, archivoEntrenadores);
+                                    Entrenador entrenador = Menu.traerEntrenador(archivoEntrenadores, usuarioEntrenador);
                                     Menu.menuEntrenador(scanner, archivoEntrenadores, archivoJugadores, archivoEquipos, entrenador);
                                     break;
                                 case 4:
                                     Menu.iniciarSesion(scanner, archivoJugadores);
+
                                     break;
                                 case 5:
                                     break;
@@ -263,13 +266,15 @@ public class Menu {
                     Menu.eliminarJugadores(scanner,archivoJugadores,archivoEquipos, entrenador.getEquipoDirigido());
                     break;
                 case 4:
-                    Menu.menuEditarPerfil(scanner, archivoEntrenador, entrenador);
+                    Menu.menuEditarPerfil(scanner,archivoEntrenador, entrenador);
+                    break;
+                case 5:
                     break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
 
-        }while(opcion!=4);
+        }while(opcion!=5);
 
 
     }
@@ -278,7 +283,8 @@ public class Menu {
         System.out.println("1. Ver todos los equipos");
         System.out.println("2. Agregar jugador al equipo");
         System.out.println("3. Eliminar jugador del equipo");
-        System.out.println("4. Volver al menu anterior");
+        System.out.println("4. Editar Perfil");
+        System.out.println("5. Volver al menu anterior");
     }
 
     public static Equipo traerEquipodelEntrenador(ArchivoJson archivoEquipos, String equipoDirigido){
@@ -479,37 +485,34 @@ public class Menu {
 
             switch (opcion) {
                 case 1:
-                        int op;
-                        do {
-                            op = Menu.menuCrearTorneo(scanner);
-                            scanner.nextLine();
-                            switch (op) {
-                                case 1:
-                                    Liga liga = Menu.crearLiga(scanner);
-                                    Menu.agregarEnJson(archivoLiga, liga);
-                                    System.out.println("Liga " + liga.getNombre() + " cargada con exito!");
-                                    break;
-                                case 2:
-                                    Copa copa = Menu.crearCopa(scanner);
-                                    Menu.agregarEnJson(archivoCopa, copa);
-                                    System.out.println("Copa " + copa.getNombre() + " cargada con exito!");
-                                    break;
-                                case 3:
-                                    break;
-                                case 4:
-                                    break;
-                                case 5:
-                                    break;
-                                default:
-                                    System.out.println("Opción no valida. Intente nuevamente");
-                            }
-                        }while(op != 3);
+                    int op;
+                    do {
+                        op = Menu.menuCrearTorneo(scanner);
+                        scanner.nextLine();
+                        switch (op) {
+                            case 1:
+                                Liga liga = Menu.crearLiga(scanner, archivoLiga);
+                                Menu.agregarEnJsonDeTorneo(archivoLiga, liga);
+                                System.out.println("Liga " + liga.getNombre() + " cargada con exito!");
+                                break;
+                            case 2:
+                                Copa copa = Menu.crearCopa(scanner, archivoCopa);
+                                System.out.println("Esta es la copa que logramos crear: " + copa);
+                                Menu.agregarEnJsonDeTorneo(archivoCopa, copa);
+                                System.out.println("Copa " + copa.getNombre() + " cargada con exito!");
+                                break;
+                            case 3:
+                                break;
+                            default:
+                                System.out.println("Opción no valida. Intente nuevamente");
+                        }
+                    }while(op != 3);
 
                     break;
                 case 2:
                     scanner.nextLine(); //Limpiar buffer
                     Equipo equipo = Menu.crearEquipo(scanner, archivoEntrenadores, archivoEquipos);
-                    Menu.agregarEnJson(archivoEquipos, equipo);
+                    Menu.agregarEnJsonDeEquipos(archivoEquipos, equipo);
                     System.out.println("¡El equipo " + equipo.getNombre() + " ha sido cargado con exito!");
 
                     break;
@@ -640,9 +643,40 @@ public class Menu {
 
     }
 
-    public void menuArbitro(Arbitro arbitro){
+    public static void menuArbitro(Scanner scanner,ArchivoJson archivoArbitros,Arbitro arbitro){
+        int opcion;
+        do {
+            Menu.menuTareasArbitro();
+            opcion = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcion) {
+                case 1:
+                    ///Dirigir partidos
+                    break;
+                case 2:
+                    System.out.println("Este es mi perfil:\n"+arbitro.toString());
+                    break;
+                case 3:
+                    Menu.menuEditarPerfil(scanner,archivoArbitros,arbitro);
+                    break;
+                case 4:
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intente de nuevo.");
+            }
+
+        }while(opcion!=4);
 
     }
+
+    public static void menuTareasArbitro(){
+        System.out.println("1. Dirigir Partido");
+        System.out.println("2. Ver mi perfil");
+        System.out.println("3. Editar perfil");
+        System.out.println("4. Volver al menu anterior");
+    }
+
 
     public void menuJugador(Jugador jugador){
 
@@ -687,49 +721,7 @@ public class Menu {
         return false; // Esto no debería ocurrir si se valida el usuario previamente
     }
 
-//    public static void iniciarSesion(Scanner scanner, ArchivoJson archivo) {
-//        boolean usuarioValido = false;
-//        String usuarioIngresado = null;
-//
-//        scanner.nextLine();
-//
-//        while (!usuarioValido) {
-//            System.out.println("Ingrese su usuario: ");
-//            String usuario = scanner.nextLine();
-//
-//            try {
-//                if (Menu.validarUsuario(usuario, archivo)) { // Cambiar archivo según corresponda
-//                    usuarioValido = true;
-//                    usuarioIngresado = usuario; // Guardamos el usuario válido
-//                    System.out.println("Usuario encontrado.");
-//                } else {
-//                    System.out.println("Usuario no encontrado. Por favor, intente de nuevo.");
-//                }
-//            } catch (Exception e) {
-//                System.out.println("Ocurrió un error: " + e.getMessage());
-//            }
-//        }
-//
-//        boolean contraseniaValida = false;
-//
-//        while (!contraseniaValida) {
-//            System.out.println("Ingrese su contraseña: ");
-//            String contrasenia = scanner.next();
-//
-//            try {
-//                if (validarContrasenia(usuarioIngresado, contrasenia, archivo)) { // Verifica la contraseña
-//                    contraseniaValida = true;
-//                    System.out.println("Inicio de sesión exitoso. Bienvenido.");
-//                } else {
-//                    System.out.println("Contraseña incorrecta. Por favor, intente de nuevo.");
-//                }
-//            } catch (Exception e) {
-//                System.out.println("Ocurrió un error: " + e.getMessage());
-//            }
-//        }
-//
-//
-//    }
+
 
     public static String iniciarSesion(Scanner scanner, ArchivoJson archivo) {
         boolean usuarioValido = false;
@@ -791,9 +783,27 @@ public class Menu {
 
             }
         }
-
         return p;  // Devuelve el objeto encontrado o null si no se encuentra
     }
+
+    public static Arbitro traerArbitro(ArchivoJson archivoArbitro, String nombreUsuario) {
+
+        JSONArray jsonArray = ArchivoJson.leerArray2(archivoArbitro);  // Lee el archivo JSON
+        Arbitro p = null;
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+
+            JSONObject json = jsonArray.getJSONObject(i);  // Obtiene cada objeto JSON
+            if (json.getString("usuario").equals(nombreUsuario)) {
+
+                p = Arbitro.deserializar(json);
+
+            }
+        }
+        return p;
+    }
+
+
 
     public static int menuCrearTorneo(Scanner scanner){
 
@@ -807,28 +817,68 @@ public class Menu {
 
     }
 
-    public static Liga crearLiga(Scanner scanner){
+    public static Liga crearLiga(Scanner scanner, ArchivoJson archivo){
 
-        System.out.println("Ingrese nombre de la Liga: ");
-        String nombre = scanner.nextLine();
+        boolean repetido = false;
+        String nombre = "";
+        do {
+            System.out.println("Ingrese nombre de la Liga: ");
+            nombre = scanner.nextLine();
+
+            repetido = Menu.validarNombreTorneo(nombre, archivo);
+
+            if(repetido){
+                System.out.println("El nombre ingresado ya se encuentra en uso. ");
+            }
+        } while(repetido);
 
         return new Liga(nombre);
     }
 
-    public static Copa crearCopa(Scanner scanner){
-        System.out.println("Ingrese nombre de la copa: ");
-        String nombre = scanner.nextLine();
+    public static boolean validarNombreTorneo(String nombre, ArchivoJson archivo) {
+
+        JSONArray jsonArray = new JSONArray(ArchivoJson.leerArray2(archivo));
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            if (jsonObject.getString("nombre").equals(nombre)) {
+                return true; // Nombre repetido
+            }
+        }
+
+
+        return false; // Nombre sin uso
+    }
+
+    public static Copa crearCopa(Scanner scanner, ArchivoJson archivo){
+        boolean repetido = false;
+        String nombre = "";
+
+        do {
+            System.out.println("Ingrese nombre de la Copa: ");
+            nombre = scanner.nextLine();
+
+            System.out.println("1");
+            repetido = Menu.validarNombreTorneo(nombre, archivo);
+
+
+            if(repetido){
+                System.out.println("El nombre ingresado ya se encuentra en uso. ");
+            }
+        } while(repetido);
+
 
         return new Copa(nombre);
     }
 
-    public static void agregarEnJson(ArchivoJson archivo, Torneo nuevoDato){
-        JSONArray jsonArray = ArchivoJson.leerArray(archivo);
+    public static void agregarEnJsonDeTorneo(ArchivoJson archivo, Torneo nuevoDato){
+        JSONArray jsonArray = ArchivoJson.leerArray2(archivo);
         jsonArray.put(nuevoDato.serializar());
         ArchivoJson.grabarArray(jsonArray,archivo);
     }
 
-    public static void agregarEnJson(ArchivoJson archivo, Equipo nuevoDato){
+    public static void agregarEnJsonDeEquipos(ArchivoJson archivo, Equipo nuevoDato){
         JSONArray jsonArray = ArchivoJson.leerArray2(archivo);
         jsonArray.put(nuevoDato.serializar());
         ArchivoJson.grabarArray(jsonArray,archivo);
@@ -869,7 +919,7 @@ public class Menu {
     }
 
 
-    public static void menuEditarPerfil(Scanner scanner, ArchivoJson archivo, Persona persona){
+    public static void menuEditarPerfil(Scanner scanner,ArchivoJson archivo, Persona persona){
 
         int opcion = 0;
 
@@ -904,30 +954,29 @@ public class Menu {
         } while(opcion != 5);
     }
 
-    public static void editarNombre(Scanner scanner, ArchivoJson archivo, Persona personaAEditar){
-        JSONArray jsonArray = ArchivoJson.leerArray2(archivo);
+    public static void editarNombre(Scanner scanner, ArchivoJson archivoTipoPersona, Persona personaAEditar){
 
         System.out.println("Ingrese el nuevo nombre:");
         String nombre = scanner.nextLine();
 
         personaAEditar.setNombre(nombre);
-
-        Menu.actualizarJsondePersona(archivo, personaAEditar);
+        Menu.actualizarJsondePersona(archivoTipoPersona, personaAEditar);
         System.out.println("¡Cambio de nombre realizado con exito!");
 
     }
 
-    public static void editarDNI(Scanner scanner, ArchivoJson archivo, Persona personaAEditar){
-        JSONArray jsonArray = ArchivoJson.leerArray2(archivo);
+    public static void editarDNI(Scanner scanner, ArchivoJson archivoTipoPersona, Persona personaAEditar){
+
         int flag = 0;
         int dni;
 
         do {
             System.out.println("Ingrese el nuevo dni:");
             dni = scanner.nextInt();
+            scanner.nextLine();
 
             try {
-                flag = Menu.validarSiYaExisteDni(dni, archivo);
+                flag = Menu.validarSiYaExisteDni(dni, archivoTipoPersona);
                 flag = Menu.CantidadDigitos(dni);
 
             } catch (ExceptionDniYaIngresado | ExceptionCantDigitosDni e){
@@ -939,13 +988,13 @@ public class Menu {
 
         personaAEditar.setDni(dni);
 
-        Menu.actualizarJsondePersona(archivo, personaAEditar);
+        Menu.actualizarJsondePersona(archivoTipoPersona, personaAEditar);
         System.out.println("¡Cambio de dni realizado con exito!");
 
     }
 
-    public static void editarUsuario(Scanner scanner, ArchivoJson archivo, Persona personaAEditar){
-        JSONArray jsonArray = ArchivoJson.leerArray2(archivo);
+    public static void editarUsuario(Scanner scanner, ArchivoJson archivoTipoPersona, Persona personaAEditar){
+
         int flag = 0;
         String nombreNuevo = "";
 
@@ -954,7 +1003,7 @@ public class Menu {
             nombreNuevo = scanner.nextLine();
 
             try {
-                flag = Menu.validarSiYaExisteUsuario(nombreNuevo, archivo);
+                flag = Menu.validarSiYaExisteUsuario(nombreNuevo, archivoTipoPersona);
 
             } catch (ExceptionUsuarioRepetido e){
                 System.out.println(e.getMessage());
@@ -965,27 +1014,27 @@ public class Menu {
 
         personaAEditar.setUsuario(nombreNuevo);
 
-        Menu.actualizarJsondePersona(archivo, personaAEditar);
+        Menu.actualizarJsondePersona(archivoTipoPersona, personaAEditar);
         System.out.println("¡Cambio de nombre de usuario realizado con exito!");
 
     }
 
 
-    public static void editarContrasenia(Scanner scanner, ArchivoJson archivo, Persona personaAEditar){
-        JSONArray jsonArray = ArchivoJson.leerArray2(archivo);
+    public static void editarContrasenia(Scanner scanner, ArchivoJson archivoTipoPersona, Persona personaAEditar){
+
 
         System.out.println("Ingrese la nueva contrasena:");
         String contrasena = scanner.nextLine();
 
         personaAEditar.setContrasenia(contrasena);
 
-        Menu.actualizarJsondePersona(archivo, personaAEditar);
+        Menu.actualizarJsondePersona(archivoTipoPersona, personaAEditar);
         System.out.println("¡Cambio de contrasena realizado con exito!");
 
     }
 
-    public static int validarSiYaExisteUsuario(String usuario, ArchivoJson archivo) throws ExceptionUsuarioRepetido {
-        JSONTokener tokener = ArchivoJson.leer(archivo); // Lee el archivo JSON
+    public static int validarSiYaExisteUsuario(String usuario, ArchivoJson archivoTipoPersona) throws ExceptionUsuarioRepetido {
+        JSONTokener tokener = ArchivoJson.leer(archivoTipoPersona); // Lee el archivo JSON
 
         if (tokener != null) {
 
@@ -1000,8 +1049,9 @@ public class Menu {
                     throw new ExceptionUsuarioRepetido("El nombre de usuario ingresado ya se encuentra en uso.");
                 }
             }
+            return 0; // Retorna 0 si no encuentra duplicados
         }
-        return 0; // Retorna 0 si no encuentra duplicados
+        return 1;
     }
 
 

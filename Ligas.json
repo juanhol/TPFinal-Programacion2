@@ -1,0 +1,18 @@
+[
+   {
+      "estado": "NO_JUGADO",
+      "resultados": {},
+      "id": 0,
+      "nombre": "Liga Argentina",
+      "listadoPartidos": [],
+      "equipos": []
+   },
+   {
+      "estado": "NO_JUGADO",
+      "resultados": {},
+      "id": 3,
+      "nombre": "Liga Española",
+      "listadoPartidos": [],
+      "equipos": []
+   }
+]

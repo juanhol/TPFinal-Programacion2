@@ -1,8 +1,9 @@
 [{
    "estado": true,
-   "usuario": "arbitro1",
-   "contrasenia": "1234",
-   "nombre": "arbitro1",
-   "dni": 22222222,
-   "partidosArbitrados": 10
+   "tienePartidoAdirigir": false,
+   "usuario": "usuario1",
+   "contrasenia": "pass1",
+   "nombre": "Lautaro Echebarne",
+   "dni": 40000001,
+   "partidosArbitrados": 150
 }]

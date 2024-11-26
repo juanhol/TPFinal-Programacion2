@@ -1,0 +1,22 @@
+[
+   {
+      "estado": "NO_JUGADO",
+      "resultados": {},
+      "faseActual": "Octavos",
+      "partidosPorFase": [],
+      "id": 1,
+      "nombre": "Copa Argentina",
+      "fases": [],
+      "equipos": []
+   },
+   {
+      "estado": "NO_JUGADO",
+      "resultados": {},
+      "faseActual": "Octavos",
+      "partidosPorFase": [],
+      "id": 2,
+      "nombre": "Copa Libertadores",
+      "fases": [],
+      "equipos": []
+   }
+]
