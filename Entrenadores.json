@@ -1,8 +1,130 @@
-[{
-   "estado": true,
-   "equipoDirigido": "",
-   "usuario": "entrenador1",
-   "contrasenia": "1234",
-   "nombre": "entrenador1",
-   "dni": 33333333
-}]
+[
+   {
+      "estado": true,
+      "equipoDirigido": "river",
+      "usuario": "entrenador1",
+      "contrasenia": "pass1",
+      "nombre": "Marcelo Gallardo",
+      "dni": 20000001
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "aldosivi",
+      "usuario": "entrenador2",
+      "contrasenia": "pass2",
+      "nombre": "Pep Guardiola",
+      "dni": 20000002
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "boca",
+      "usuario": "entrenador3",
+      "contrasenia": "pass3",
+      "nombre": "Diego Simeone",
+      "dni": 20000003
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador4",
+      "contrasenia": "pass4",
+      "nombre": "Carlo Ancelotti",
+      "dni": "20000004"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador5",
+      "contrasenia": "pass5",
+      "nombre": "Zinedine Zidane",
+      "dni": "20000005"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador6",
+      "contrasenia": "pass6",
+      "nombre": "Mauricio Pochettino",
+      "dni": "20000006"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador7",
+      "contrasenia": "pass7",
+      "nombre": "Luis Enrique",
+      "dni": "20000007"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador8",
+      "contrasenia": "pass8",
+      "nombre": "Jürgen Klopp",
+      "dni": "20000008"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador9",
+      "contrasenia": "pass9",
+      "nombre": "Ernesto Valverde",
+      "dni": "20000009"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador10",
+      "contrasenia": "pass10",
+      "nombre": "José Mourinho",
+      "dni": "20000010"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador11",
+      "contrasenia": "pass11",
+      "nombre": "Antonio Conte",
+      "dni": "20000011"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador12",
+      "contrasenia": "pass12",
+      "nombre": "Unai Emery",
+      "dni": "20000012"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador13",
+      "contrasenia": "pass13",
+      "nombre": "Roberto Mancini",
+      "dni": 20000013
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador14",
+      "contrasenia": "pass14",
+      "nombre": "Fernando Santos",
+      "dni": "20000014"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "No tiene equipo",
+      "usuario": "entrenador15",
+      "contrasenia": "pass15",
+      "nombre": "Tite Pereira",
+      "dni": "20000015"
+   },
+   {
+      "estado": true,
+      "equipoDirigido": "racing",
+      "usuario": "entrenador16",
+      "contrasenia": "pass16",
+      "nombre": "Didier Deschamps",
+      "dni": 20000016
+   }
+]

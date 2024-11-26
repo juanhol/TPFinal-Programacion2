@@ -17,9 +17,9 @@ public class Copa extends Torneo{
         this.partidosEliminatorios=new HashMap<>();
     }
 
-    public Copa(String nombre, String faseActual) {
+    public Copa(String nombre) {
         super(nombre);
-        this.faseActual = faseActual;
+        this.faseActual = "Octavos"; // Siempre será octavos la primer fase a jugar
         this.partidosEliminatorios = new HashMap<>();
     }
 

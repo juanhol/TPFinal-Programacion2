@@ -1,0 +1,92 @@
+[
+   {
+      "Entrenador": {
+         "estado": true,
+         "equipoDirigido": "river",
+         "usuario": "entrenador1",
+         "contrasenia": "pass1",
+         "nombre": "Marcelo Gallardo",
+         "dni": 20000001
+      },
+      "estado": true,
+      "listadoJugadores": [
+         {
+            "posicion": "ARQUERO",
+            "estado": true,
+            "usuario": "usuario55",
+            "contrasenia": "pass55",
+            "nombre": "Lucas Díaz",
+            "dni": 10000044
+         },
+         {
+            "posicion": "ARQUERO",
+            "estado": true,
+            "usuario": "usuario55",
+            "contrasenia": "pass55",
+            "nombre": "Lucas Díaz",
+            "dni": 10000044
+         }
+      ],
+      "id": 1,
+      "nombre": "river"
+   },
+   {
+      "Entrenador": {
+         "estado": true,
+         "equipoDirigido": "boca",
+         "usuario": "entrenador3",
+         "contrasenia": "pass3",
+         "nombre": "Diego Simeone",
+         "dni": 20000003
+      },
+      "estado": true,
+      "listadoJugadores": [],
+      "id": 2,
+      "nombre": "boca"
+   },
+   {
+      "Entrenador": {
+         "estado": true,
+         "equipoDirigido": "aldosivi",
+         "usuario": "entrenador2",
+         "contrasenia": "pass2",
+         "nombre": "Pep Guardiola",
+         "dni": 20000002
+      },
+      "estado": true,
+      "listadoJugadores": [
+         {
+            "posicion": "ARQUERO",
+            "estado": true,
+            "usuario": "usuario54",
+            "contrasenia": "pass54",
+            "nombre": "Enzo Ruiz",
+            "dni": 10000043
+         },
+         {
+            "posicion": "ARQUERO",
+            "estado": true,
+            "usuario": "usuario55",
+            "contrasenia": "pass55",
+            "nombre": "Lucas Díaz",
+            "dni": 10000044
+         }
+      ],
+      "id": 3,
+      "nombre": "aldosivi"
+   },
+   {
+      "Entrenador": {
+         "estado": true,
+         "equipoDirigido": "racing",
+         "usuario": "entrenador16",
+         "contrasenia": "pass16",
+         "nombre": "Didier Deschamps",
+         "dni": 20000016
+      },
+      "estado": true,
+      "listadoJugadores": [],
+      "id": 5,
+      "nombre": "racing"
+   }
+]

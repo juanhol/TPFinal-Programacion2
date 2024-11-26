@@ -13,8 +13,7 @@ public abstract class Torneo implements Persistible {
 
     // Constructores
     public Torneo() {
-        idh++;
-        this.id=idh;
+        this.id=idh++;
         this.equipos=new HashSet<>();
         this.resultados=new HashMap<>();
         this.estado=Estado.NO_JUGADO;
@@ -22,8 +21,7 @@ public abstract class Torneo implements Persistible {
 
     public Torneo(String nombre) {
         this.nombre = nombre;
-        idh++;
-        this.id=idh;
+        this.id=idh++;
         this.equipos=new HashSet<>();
         this.resultados=new HashMap<>();
         this.estado=Estado.NO_JUGADO;

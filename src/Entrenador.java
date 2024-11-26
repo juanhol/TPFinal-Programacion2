@@ -45,13 +45,27 @@ public class Entrenador extends Persona{
 
 
     public static Entrenador deserializar(JSONObject json) {
-        Entrenador entrenador=new Entrenador();
+        Entrenador entrenador = null;
+
         try {
-            entrenador= (Entrenador) Persona.deserializar(json);
-            entrenador.setEquipoDirigido(json.getString("equipodirigido"));
-        }catch (JSONException ex){
+
+            // Deserializar los datos comunes de Persona
+            Persona p = Persona.deserializar(json);
+
+            // Crear un nuevo Entrenador y copiar los datos
+            entrenador = new Entrenador(
+                    p.getDni(),
+                    p.getNombre(),
+                    p.getUsuario(),
+                    p.getContrasenia(),
+                    json.getString("equipoDirigido")
+            );
+
+
+        } catch (JSONException ex) {
             ex.printStackTrace();
         }
+
         return entrenador;
     }
 

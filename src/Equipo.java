@@ -27,6 +27,7 @@ public class Equipo implements Persistible{
         this.id=idh;
         this.nombre = nombre;
         this.entrenador = entrenador;
+        this.estado=true;
         this.listadoJugadores=new Listado<>();
     }
 
@@ -87,6 +88,14 @@ public class Equipo implements Persistible{
         listadoJugadores.listarElementos();
     }
 
+    public boolean agregarJugador(Jugador jugador){
+        if(jugador != null){
+            listadoJugadores.agregarElemento(jugador);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return  "id=" + id +
@@ -97,42 +106,54 @@ public class Equipo implements Persistible{
 
     @Override
     public JSONObject serializar() {
-        JSONObject jsonObject=new JSONObject();
+        JSONObject jsonObject = new JSONObject();
+
         try {
-            jsonObject.put("id",this.id);
-            jsonObject.put("nombre",this.nombre);
-            JSONArray listadoJugadores=new JSONArray();
+            jsonObject.put("id", this.id);
+            jsonObject.put("nombre", this.nombre);
+            jsonObject.put("estado", this.estado);
+            jsonObject.put("Entrenador", this.getEntrenador().serializar());
+
+            // Serializar listado de jugadores
+            JSONArray listadoJugadores = new JSONArray();
             for (int i = 0; i < this.listadoJugadores.cantidadElementos(); i++) {
-                JSONObject jugador=this.listadoJugadores.getElemento(i).serializar();
+                JSONObject jugador = this.listadoJugadores.getElemento(i).serializar();
                 listadoJugadores.put(jugador);
             }
-            jsonObject.put("listadoJugadores",listadoJugadores);
-            jsonObject.put("estado",this.estado);
-            jsonObject.put("Entrenador",this.getEntrenador().serializar());
-        }catch(JSONException ex){
+            jsonObject.put("listadoJugadores", listadoJugadores);
+
+        } catch (JSONException ex) {
             ex.printStackTrace();
         }
+
         return jsonObject;
     }
 
     //@Override
     public static Equipo deserializar(JSONObject json) {
-        Equipo equipo=new Equipo();
+        Equipo equipo = new Equipo();
+
         try {
             equipo.setId(json.getInt("id"));
             equipo.setNombre(json.getString("nombre"));
-            Listado <Jugador> listadoJugadores = new Listado<>();
-            JSONArray listadoJugadoresJson=json.getJSONArray("listadoJugadores");
+
+            // Deserializar listado de jugadores
+            Listado<Jugador> listadoJugadores = new Listado<>();
+            JSONArray listadoJugadoresJson = json.getJSONArray("listadoJugadores");
+
             for (int i = 0; i < listadoJugadoresJson.length(); i++) {
-                Jugador jugador=(Jugador)Jugador.deserializar(listadoJugadoresJson.getJSONObject(i));
+                Jugador jugador = Jugador.deserializar(listadoJugadoresJson.getJSONObject(i));
                 listadoJugadores.agregarElemento(jugador);
             }
             equipo.setListadoJugadores(listadoJugadores);
+
             equipo.setEstado(json.getBoolean("estado"));
             equipo.setEntrenador(Entrenador.deserializar(json.getJSONObject("Entrenador")));
-        }catch (JSONException ex){
+
+        } catch (JSONException ex) {
             ex.printStackTrace();
         }
+
         return equipo;
     }
 }

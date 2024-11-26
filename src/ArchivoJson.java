@@ -1,11 +1,10 @@
 import netscape.javascript.JSObject;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class ArchivoJson {
     private String nombre;
@@ -65,6 +64,42 @@ public class ArchivoJson {
         }
         catch (IOException ex){
             ex.printStackTrace();
+        }
+    }
+
+    //////////////////////////
+    public static JSONArray leerArray2(ArchivoJson archivo) {
+        File file = new File(archivo.getNombre());
+
+        if (!file.exists()) {
+            System.out.println("El archivo no existe. Se creará uno nuevo.");
+            return new JSONArray(); // Retorna un JSONArray vacío si el archivo no existe
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            StringBuilder contenido = new StringBuilder();
+            String linea;
+
+            while ((linea = reader.readLine()) != null) {
+                contenido.append(linea);
+            }
+
+            // Verificar si el archivo está vacío
+            if (contenido.toString().isEmpty()) {
+                System.out.println("El archivo está vacío.");
+                return new JSONArray(); // Retorna un JSONArray vacío
+            }
+
+            // Intentar parsear el contenido del archivo a un JSONArray
+            return new JSONArray(contenido.toString());
+        } catch (IOException e) {
+            System.out.println("Error leyendo el archivo: " + archivo.getNombre());
+            e.printStackTrace();
+            return new JSONArray(); // Retorna un JSONArray vacío en caso de error
+        } catch (JSONException e) {
+            System.out.println("Error de formato en el archivo JSON.");
+            e.printStackTrace();
+            return new JSONArray(); // Retorna un JSONArray vacío si el JSON es inválido
         }
     }
 }

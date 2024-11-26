@@ -48,16 +48,28 @@ public class Jugador extends Persona{
 
 
     public static Jugador deserializar(JSONObject json) {
-        Jugador jugador=new Jugador();
-        try {
-            jugador= (Jugador) Persona.deserializar(json);
-            jugador.setPosicion(json.getEnum(Posicion.class,"posicion"));
+        Jugador jugador = null;
 
-        }catch (JSONException ex){
+        try {
+
+            // Deserializar los datos comunes de Persona
+            Persona p = Persona.deserializar(json);
+
+            // Crear un nuevo Jugador y copiar los datos
+            jugador = new Jugador(
+                    p.getDni(),
+                    p.getNombre(),
+                    p.getUsuario(),
+                    p.getContrasenia(),
+                    json.getEnum(Posicion.class,"posicion")
+            );
+
+
+        } catch (JSONException ex) {
             ex.printStackTrace();
         }
-        return jugador;
 
+        return jugador;
     }
 
 }

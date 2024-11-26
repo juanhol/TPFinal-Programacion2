@@ -43,11 +43,22 @@ public class Listado  <T extends Persistible> {
 
 
 
-    public JSONArray serializar() {
+    public JSONObject serializar() {
+        JSONObject object = new JSONObject();
         JSONArray listadoArray = new JSONArray();
+
         for(T elemento : elementos){
             listadoArray.put(elemento.serializar());
         }
-        return listadoArray;
+
+        object.put("listado", listadoArray);
+        return object;
+    }
+
+    @Override
+    public String toString() {
+        return "Listado{" +
+                "elementos=" + elementos +
+                '}';
     }
 }
