@@ -15,8 +15,6 @@ public class Equipo implements Persistible{
 
     public Equipo() {
 
-        this.estado=true;
-        this.listadoJugadores=new Listado<>();
     }
 
     public Equipo(String nombre, Entrenador entrenador) {

@@ -2,42 +2,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Partido implements Persistible{
-    private static int idh=0;
-    private int id;
     private Arbitro arbitro;
     private Equipo equipoLocal;
     private Equipo equipoVisitante;
     private int resultadoLocal;
-    private int ResultadoVisitante;
+    private int resultadoVisitante;
     private Estado estado;
 
     public Partido() {
-        idh++;
-        this.id=idh;
-        this.resultadoLocal=0;
-        this.ResultadoVisitante=0;
-        this.estado=Estado.NO_JUGADO;
+
     }
 
     public Partido(Arbitro arbitro, Equipo equipoLocal, Equipo equipoVisitante) {
-        idh++;
-        this.id=idh;
         this.arbitro = arbitro;
         this.equipoLocal = equipoLocal;
         this.equipoVisitante = equipoVisitante;
         this.resultadoLocal=0;
-        this.ResultadoVisitante=0;
+        this.resultadoVisitante=0;
         this.estado=Estado.NO_JUGADO;
     }
 
     ///GETTERS Y SETTERS
 
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
     public Arbitro getArbitro() {
         return arbitro;
     }
@@ -61,11 +47,9 @@ public class Partido implements Persistible{
     }public void setResultadoLocal(int resultadoLocal) {
         this.resultadoLocal = resultadoLocal;
     }
-    public int getResultadoVisitante() {
-        return ResultadoVisitante;
-    }
+    public int getResultadoVisitante() {return resultadoVisitante;}
     public void setResultadoVisitante(int resultadoVisitante) {
-        ResultadoVisitante = resultadoVisitante;
+        resultadoVisitante = resultadoVisitante;
     }
     public Estado getEstado() {
         return estado;
@@ -78,6 +62,22 @@ public class Partido implements Persistible{
 
     public Equipo getGanador(){
         Equipo equipoGanador=new Equipo();
+        if(estado==Estado.JUGADO){
+            if (resultadoLocal>resultadoVisitante){
+
+                equipoGanador=equipoLocal;
+
+            } else if (resultadoVisitante>resultadoLocal) {
+
+                equipoGanador=equipoVisitante;
+
+            }else{
+                return new Equipo();///Retorna un equipo vacio si es empate
+            }
+        }else{
+            equipoGanador=null;///Retorna un equipo null si no se ha jugado o si fue suspendido
+        }
+
         return equipoGanador;
     }
 
@@ -85,7 +85,7 @@ public class Partido implements Persistible{
     public JSONObject serializar() {
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("id",this.getId());
+
             jsonObject.put("arbitro",this.getArbitro().serializar());
             jsonObject.put("equipoLocal",this.getEquipoLocal().serializar());
             jsonObject.put("equipoVisitante",this.getEquipoVisitante().serializar());
@@ -102,7 +102,6 @@ public class Partido implements Persistible{
     public static Partido deserializar(JSONObject json){
         Partido partido = new Partido();
         try {
-            partido.setId(json.getInt("id"));
             partido.setArbitro(Arbitro.deserializar(json.getJSONObject("arbitro")));
             partido.setEquipoLocal(Equipo.deserializar(json.getJSONObject("equipoLocal")));
             partido.setEquipoVisitante(Equipo.deserializar(json.getJSONObject("equipoVisitante")));
